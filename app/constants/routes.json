@@ -1,0 +1,10 @@
+{
+  "HOME": "/",
+  "WORKERS": "/workers",
+  "WORKER": "/worker/",
+  "SITES": "/sites",
+  "SITE": "/site/",
+  "SETTINGS": "/settings",
+  "NEWSITE": "/new-site",
+  "NEWWORKER": "/new-worker"
+}

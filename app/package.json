@@ -1,0 +1,18 @@
+{
+  "name": "kappy",
+  "productName": "kappy",
+  "version": "0.0.1",
+  "description": "Kappy is an app to manage your companies time and hours put into work",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Mohsin Riaz",
+    "email": "wilddogers@gmail.com",
+    "url": "https://mohsinriaz.es/"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",
+    "postinstall": "yarn electron-rebuild"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}

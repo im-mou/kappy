@@ -1,0 +1,73 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+@import '~@fortawesome/fontawesome-free/css/all.css';
+@import '~antd/dist/antd.css';
+
+body {
+  position: relative;
+  height: 100vh;
+  font-family: Arial, Helvetica, Helvetica Neue, serif;
+  /* overflow-y: hidden; */
+}
+
+h2 {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: bold;
+  letter-spacing: -0.025em;
+  margin-bottom: 15px;
+}
+
+.titlebar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.titlebar-button {
+  -webkit-app-region: no-drag;
+}
+
+p.subtitle {
+  font-size: 16px;
+  color: #666;
+}
+
+.section {
+}
+.section .section-header:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top:none;
+}
+.section .section-header {
+  border-top: 5px solid rgba(0, 0, 0, 0.07);
+  margin-top: 30px;
+  padding-top: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+/*
+p {
+  font-size: 24px;
+}
+
+
+li {
+  list-style: none;
+}
+
+a {
+  color: white;
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 1;
+  text-decoration: none;
+  cursor: pointer;
+} */

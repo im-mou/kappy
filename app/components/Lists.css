@@ -1,0 +1,13 @@
+.listContainer {
+  margin-top: 20px;
+}
+
+.listContainer .header {
+    font-size: smaller;
+    opacity: 0.7;
+}
+
+.listItem:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
