@@ -62,8 +62,8 @@ export default function NewWorker(): JSX.Element {
             placeholder="Tipo de Trabajador"
             allowClear
           >
-            {tipoTrabajadores.map((tipo) => (
-              <Option value={tipo}>{tipo}</Option>
+            {tipoTrabajadores.map((tipo, index) => (
+              <Option key={index} value={tipo}>{tipo}</Option>
             ))}
           </Select>
         </Form.Item>

@@ -21,9 +21,9 @@ export default function App(props: Props): JSX.Element {
     >
       <Sidebar />
       <Layout className={styles['site-layout']} style={{ marginLeft: 200 }}>
-        <MainHeader />
+        {/* <MainHeader /> */}
         {/* <Content style={{ margin: '0 16px' }}> */}
-        <Content style={{ padding: '0 50px' }}>
+        <Content style={{ padding: '15px 30px' }}>
           <div
             className={styles['site-layout-background']}
             style={{ padding: 24, /*minHeight: '100vh'*/ }}

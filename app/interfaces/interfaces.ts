@@ -1,7 +1,7 @@
 // Interfaces
 
 export interface IWorker {
-  id: number;
+  _id?: number;
   name: string;
   startdate: string;
   information: string;
@@ -10,9 +10,10 @@ export interface IWorker {
 }
 
 export interface ISite {
-  id: number;
+  _id?: number;
   name: string;
   startdate: string;
   information: string;
+  active: boolean;
   workers?: Array<IWorker>;
 }

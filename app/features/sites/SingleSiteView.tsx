@@ -11,6 +11,7 @@ const site: ISite = {
   name: 'Obra 1',
   startdate: '10/03/2010',
   information: 'Jefe de obra: 94847463',
+  active: true,
   workers: [
     {
       id: 1,

@@ -50,6 +50,11 @@ p.subtitle {
   color: #333;
 }
 
+.ant-layout {
+  background: #fff;
+}
+
+
 /*
 p {
   font-size: 24px;

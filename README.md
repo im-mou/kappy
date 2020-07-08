@@ -1,6 +1,8 @@
 
 # Kappy
+Kappy is an app to manage your companies time and hours put into work
 
+<!-- ![Kappy screenshot](../) -->
 
 ## Install
 

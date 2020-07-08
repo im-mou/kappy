@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader } from 'antd';
+import { PageHeader, Row, Col } from 'antd';
 
 const headerStyle = {
   marginBottom: '40px',
@@ -12,17 +12,30 @@ type Props = {
   title: string;
   subTitle: string;
   displayBack?: boolean;
+  options?: JSX.Element;
 };
 
-export default function PageHeaderMenu({ title, subTitle, displayBack }: Props) {
+export default function PageHeaderMenu({
+  title,
+  subTitle,
+  displayBack,
+  options,
+}: Props) {
   return (
-    <PageHeader
-      className="site-page-header"
-      style={headerStyle}
-      title={title}
-      backIcon={displayBack}
-      subTitle={subTitle}
-      onBack={() => window.history.back()}
-    />
+    <Row style={headerStyle} justify="space-around" align="middle">
+      <Col span={18}>
+        <PageHeader
+          className="site-page-header"
+          title={title}
+          style={{padding:0}}
+          backIcon={displayBack}
+          subTitle={subTitle}
+          onBack={() => window.history.back()}
+        />
+      </Col>
+      <Col style={{ textAlign: 'right' }} span={6}>
+        {options}
+      </Col>
+    </Row>
   );
 }

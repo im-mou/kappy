@@ -17,18 +17,20 @@ const { Sider, Footer } = Layout;
 const footerStyle = {
   backgroundColor: 'transparent',
   color: 'rgba(255,255,255,0.3)',
-  fontSize:'12px',
+  fontSize: '12px',
   paddingLeft: '25px',
 };
 
 export default function Sidebar(): JSX.Element {
   return (
-    <Sider style={{
-      overflow: 'auto',
-      height: '100vh',
-      position: 'fixed',
-      left: 0,
-    }}>
+    <Sider
+      style={{
+        overflow: 'auto',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+      }}
+    >
       <div className={styles.logo} />
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
         <Menu.Item key="1" icon={<HomeOutlined />}>

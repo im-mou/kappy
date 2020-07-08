@@ -13,6 +13,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import { dbDocuments } from "./database/dbInit";
 
 export default class AppUpdater {
   constructor() {
@@ -23,6 +24,12 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+
+// Put the neDB in a global constant
+// see the following issue for the explaination
+// https://github.com/louischatriot/nedb/issues/531#issuecomment-439599145
+const globalAny: any = global;
+globalAny.dbDocuments = dbDocuments;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
