@@ -1,5 +1,11 @@
 import React from 'react';
 // import styles from './Workers.css';
+import { useSelector, useDispatch } from 'react-redux';
+import workerReducer, {
+  workersActions,
+  createNewWorker,
+  selectWorkers,
+} from './workerSlice';
 
 import { Form, Input, Button, DatePicker, Select } from 'antd';
 
@@ -33,6 +39,7 @@ const validateMessages = {
 };
 
 const onFinish = (values: any) => {
+  const dispatch = useDispatch();
   console.log(values);
 };
 
@@ -58,12 +65,11 @@ export default function NewWorker(): JSX.Element {
           label="Tipo de Trabajador"
           rules={[{ required: true }]}
         >
-          <Select
-            placeholder="Tipo de Trabajador"
-            allowClear
-          >
+          <Select placeholder="Tipo de Trabajador" allowClear>
             {tipoTrabajadores.map((tipo, index) => (
-              <Option key={index} value={tipo}>{tipo}</Option>
+              <Option key={index} value={tipo}>
+                {tipo}
+              </Option>
             ))}
           </Select>
         </Form.Item>

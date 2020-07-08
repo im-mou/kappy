@@ -7,21 +7,21 @@ import { ISite } from '../../interfaces/interfaces';
 import { Descriptions, Button, Space } from 'antd';
 
 const site: ISite = {
-  id: 1,
+  _id: 1,
   name: 'Obra 1',
   startdate: '10/03/2010',
   information: 'Jefe de obra: 94847463',
   active: true,
   workers: [
     {
-      id: 1,
+      _id: 1,
       name: 'Mohsin Riaz',
       startdate: '27/02/2020',
       information: 'telefono: 94847463',
       workertype: 'Encargado',
     },
     {
-      id: 2,
+      _id: 2,
       name: 'Aamir mumtaz',
       startdate: '20/05/2320',
       information: 'telefono: 948252463',

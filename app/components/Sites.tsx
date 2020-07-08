@@ -5,16 +5,18 @@ import { ISite } from '../interfaces/interfaces';
 
 const sites: Array<ISite> = [
   {
-    id: 1,
+    _id: 1,
     name: 'Obra 1',
     startdate: '10/03/2010',
     information: 'Jefe de obra: 94847463',
+    active: true,
   },
   {
-    id: 2,
+    _id: 2,
     name: 'Obra 2',
     startdate: '06/11/2017',
     information: 'Encargado: 94843463',
+    active: true,
   },
 ];
 

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice} from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-cycle
 import { AppThunk, RootState } from '../../store';
 

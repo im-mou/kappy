@@ -7,21 +7,21 @@ import { IWorker } from '../../interfaces/interfaces';
 import { Descriptions, Button, Space } from 'antd';
 
 const worker: IWorker = {
-  id: 1,
+  _id: 1,
   name: 'Mohsin Riaz',
   startdate: '27/02/2020',
   information: 'telefono: 94847463',
   workertype: 'Encargado',
   sites: [
     {
-      id: 1,
+      _id: 1,
       name: 'Obra 1',
       startdate: '10/03/2010',
       information: 'Jefe de obra: 94847463',
       active: true,
     },
     {
-      id: 2,
+      _id: 2,
       name: 'Obra 2',
       startdate: '06/11/2017',
       information: 'Encargado: 94843463',
