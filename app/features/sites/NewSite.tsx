@@ -1,7 +1,15 @@
 import React from 'react';
-// import styles from './Sites.css';
+import locale from 'antd/es/date-picker/locale/es_ES';
+import { useDispatch } from 'react-redux';
+import { createNewSite, selectSites } from './siteSlice';
+import { ISite } from '../../interfaces/interfaces';
+import moment from 'moment';
 
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button, DatePicker, message } from 'antd';
+
+type TSitePayload = {
+  site: ISite;
+};
 
 const layout = {
   labelCol: { span: 8 },
@@ -19,15 +27,40 @@ const validateMessages = {
   },
 };
 
-const onFinish = (values: any) => {
-  console.log(values);
-};
-
 export default function NewSite(): JSX.Element {
+
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+
+  // reset from after submitting
+  const onReset = () => {
+    form.resetFields();
+  };
+
+  // cb() after from submittion
+  const onFinish = (formData: any) => {
+    // get sfecific data
+    const { site }: TSitePayload = formData;
+
+    // generate an id
+    const id: number = +new Date();
+
+    // serialize startdate
+    const startdate = moment(site.startdate).format('DD/MM/YYYY');
+
+    // dispatch new user data
+    dispatch(createNewSite({ id, ...site, startdate }));
+
+    // message + reset form
+    message.success('Obra creada correctamente');
+    onReset();
+  };
+
   return (
     <>
       <Form
         {...layout}
+        form={form}
         name="nest-messages"
         onFinish={onFinish}
         validateMessages={validateMessages}
@@ -41,13 +74,13 @@ export default function NewSite(): JSX.Element {
         </Form.Item>
 
         <Form.Item
-          name={["site", "startdate"]}
+          name={['site', 'startdate']}
           label="DatePicker"
           rules={[
             { type: 'object', required: true, message: 'Please select time!' },
           ]}
         >
-          <DatePicker />
+          <DatePicker format="DD/MM/YYYY" locale={locale} />
         </Form.Item>
 
         <Form.Item name={['site', 'information']} label="Más Información">

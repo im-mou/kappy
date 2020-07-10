@@ -2,7 +2,9 @@ import { createSlice, createAction, nanoid } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-cycle
 import { IWorker } from '../../interfaces/interfaces';
 import { AppThunk, RootState } from '../../store';
+import { dbStores } from '../../utils/index';
 
+const INIT_STORE = 'worker/initialize';
 const CREATE_WORKER = 'worker/createWorker';
 // const GET_ALL_WORKERS = 'worker/get_all_workers';
 // const GET_WORKER = 'worker/get_worker';
@@ -11,22 +13,47 @@ const CREATE_WORKER = 'worker/createWorker';
 
 const workerSlice = createSlice({
   name: 'workers' as string,
-  initialState: [] as any[],
+  initialState: [] as IWorker[],
   reducers: {
+    [INIT_STORE]: (state, action) => {
+      state.push(...action.payload);
+    },
     [CREATE_WORKER]: (state, action) => {
-      console.log(state, action);
+      state.push(action.payload);
     },
   },
 });
 
 export const _actions = workerSlice.actions;
 
-export const createNewWorker = (newWorker: IWorker): AppThunk => {
-  console.log(newWorker)
+export const initializeWorkersStore = (): AppThunk => {
   return (dispatch, getState) => {
-    const state = getState();
-    const newState: Array<IWorker> = state.workers.concat(newWorker);
-    dispatch(_actions[CREATE_WORKER](newState as Array<IWorker>));
+    // check if the data store is already populated
+    if (getState().workers === undefined || getState().workers.length === 0) {
+      // save data to the database
+      dbStores.workers.find({}, (err: any, workers: any) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // dispatch action to update store data
+          dispatch(_actions[INIT_STORE](workers));
+        }
+      });
+    }
+  };
+};
+
+export const createNewWorker = (newWorker: IWorker): AppThunk => {
+  return (dispatch) => {
+    // save data to the database
+    dbStores.workers.insert(newWorker, (err: any, newWorkerFromDB: IWorker) => {
+      if (err) {
+        console.log(err);
+      } else {
+        // dispatch action to update store data
+        dispatch(_actions[CREATE_WORKER](newWorkerFromDB));
+      }
+    });
   };
 };
 

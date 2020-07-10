@@ -1,13 +1,14 @@
 import { app } from 'electron';
-import Datastore from 'nedb-promises';
+import Datastore from 'nedb';
+import { resolve } from 'dns';
 
 let path =
   process.env.NODE_ENV === 'development' ? '.' : app.getPath('userData');
 
 const dbCreateLoad = (fileName: string) => {
-  return Datastore.create({
+  return new Datastore({
     filename: path.concat('/dbData/', fileName),
-    timestampData: true,
+    timestampData: false,
     autoload: true,
   });
 };
@@ -15,5 +16,5 @@ const dbCreateLoad = (fileName: string) => {
 export const dbDocuments = {
   workers: dbCreateLoad('workers.db'),
   sites: dbCreateLoad('sites.db'),
-  attendance: dbCreateLoad('attendance.db'),
+  relations: dbCreateLoad('relations.db'),
 };

@@ -4,20 +4,27 @@ import { List } from 'antd';
 import styles from './Lists.css';
 
 type Props = {
-  items: any
+  items: any;
   header?: string;
   linkPrefix?: string;
+  onClick?: Function;
 };
 
-const listItem = (item: any) : JSX.Element =>  {
+const listItem = (item: any): JSX.Element => {
   if (item.linkPrefix && item.linkPrefix !== '') {
     return (
       <Link to={item.linkPrefix + item.id}>
-        <List.Item key={item.id} className={styles.listItem}>{item.name}</List.Item>
+        <List.Item key={item.id} className={styles.listItem}>
+          {item.name}
+        </List.Item>
       </Link>
     );
   } else {
-    return <List.Item key={item.id} className={styles.listItem}>{item.name}</List.Item>;
+    return (
+      <List.Item onClick={()=>item.onClick(item.id) || null} key={item.id} className={styles.listItem}>
+        {item.name}
+      </List.Item>
+    );
   }
 };
 
@@ -25,9 +32,10 @@ export default function Lists({
   items,
   header,
   linkPrefix,
+  onClick,
 }: Props): JSX.Element {
   // add link prefix to each item, too lazy to do it properly
-  if (linkPrefix) items = items.map((el : any) => ({ ...el, linkPrefix }));
+  if (linkPrefix) items = items.map((el: any) => ({ ...el, linkPrefix, onClick }));
 
   return (
     <List

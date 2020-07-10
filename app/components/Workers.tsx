@@ -1,26 +1,14 @@
 import React from 'react';
 import routes from '../constants/routes.json';
 import Lists from './Lists';
+import { useSelector } from 'react-redux';
+import { selectWorkers } from '../features/workers/workerSlice';
 import { IWorker } from '../interfaces/interfaces';
 
-const trabajadores: Array<IWorker> = [
-  {
-    _id: 1,
-    name: 'Mohsin Riaz',
-    startdate: '27/02/2020',
-    information: 'telefono: 94847463',
-    workertype: 'Encargado',
-  },
-  {
-    _id: 2,
-    name: 'Aamir mumtaz',
-    startdate: '20/05/2320',
-    information: 'telefono: 948252463',
-    workertype: 'Encargado',
-  },
-];
-
 export default function Workers(): JSX.Element {
+  // get data from store
+  const trabajadores: Array<IWorker> = useSelector(selectWorkers);
+
   return (
     <>
       <Lists

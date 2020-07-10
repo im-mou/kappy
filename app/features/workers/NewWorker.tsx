@@ -1,13 +1,16 @@
 import React from 'react';
+import locale from 'antd/es/date-picker/locale/es_ES';
+import moment from 'moment';
 // import styles from './Workers.css';
-import { useSelector, useDispatch } from 'react-redux';
-import workerReducer, {
-  workersActions,
-  createNewWorker,
-  selectWorkers,
-} from './workerSlice';
+import { useDispatch } from 'react-redux';
+import { createNewWorker, selectWorkers } from './workerSlice';
 
-import { Form, Input, Button, DatePicker, Select } from 'antd';
+import { Form, Input, Button, DatePicker, Select, message } from 'antd';
+import { IWorker } from '../../interfaces/interfaces';
+
+type TWorkerPayload = {
+  worker: IWorker;
+};
 
 const { Option } = Select;
 
@@ -38,16 +41,40 @@ const validateMessages = {
   },
 };
 
-const onFinish = (values: any) => {
-  const dispatch = useDispatch();
-  console.log(values);
-};
-
 export default function NewWorker(): JSX.Element {
+
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+
+  // reset from after submitting
+  const onReset = () => {
+    form.resetFields();
+  };
+
+  // cb() after from submittion
+  const onFinish = (formData: any) => {
+    // get sfecific data
+    const { worker }: TWorkerPayload = formData;
+
+    // serialize startdate
+    const startdate = moment(worker.startdate).format('DD/MM/YYYY');
+
+    // generate an id
+    const id: number = +new Date();
+
+    // dispatch new user data
+    dispatch(createNewWorker({ id, ...worker, startdate }));
+
+    // message + reset form
+    message.success('Trabajador añadido correctamente');
+    onReset();
+  };
+
   return (
     <>
       <Form
         {...layout}
+        form={form}
         name="nest-messages"
         onFinish={onFinish}
         validateMessages={validateMessages}
@@ -81,7 +108,7 @@ export default function NewWorker(): JSX.Element {
             { type: 'object', required: true, message: 'Please select time!' },
           ]}
         >
-          <DatePicker />
+          <DatePicker format="DD/MM/YYYY" locale={locale} />
         </Form.Item>
 
         <Form.Item

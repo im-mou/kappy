@@ -1,40 +1,64 @@
 import React from 'react';
 // import styles from './Worker.css';
+import { useLocation } from 'react-router-dom';
 import routes from '../../constants/routes.json';
 import Lists from '../../components/Lists';
-import { IWorker } from '../../interfaces/interfaces';
+import { IWorker, ISite } from '../../interfaces/interfaces';
+import { useSelector } from 'react-redux';
+import { selectWorkers } from './workerSlice';
 
 import { Descriptions, Button, Space } from 'antd';
 
-const worker: IWorker = {
-  _id: 1,
-  name: 'Mohsin Riaz',
-  startdate: '27/02/2020',
-  information: 'telefono: 94847463',
-  workertype: 'Encargado',
-  sites: [
-    {
-      _id: 1,
-      name: 'Obra 1',
-      startdate: '10/03/2010',
-      information: 'Jefe de obra: 94847463',
-      active: true,
-    },
-    {
-      _id: 2,
-      name: 'Obra 2',
-      startdate: '06/11/2017',
-      information: 'Encargado: 94843463',
-      active: true,
-    },
-  ],
+type Props = {
+  obtainTitle?: any;
 };
 
-export default function SingleWorkerView(): JSX.Element {
+const sites: ISite[] = [];
+
+// const worker: IWorker = {
+//   id: 1,
+//   name: 'Mohsin Riaz',
+//   startdate: '27/02/2020',
+//   information: 'telefono: 94847463',
+//   workertype: 'Encargado',
+//   // sites: [
+//   //   {
+//   //     id: 1,
+//   //     name: 'Obra 1',
+//   //     startdate: '10/03/2010',
+//   //     information: 'Jefe de obra: 94847463',
+//   //     active: true,
+//   //   },
+//   //   {
+//   //     id: 2,
+//   //     name: 'Obra 2',
+//   //     startdate: '06/11/2017',
+//   //     information: 'Encargado: 94843463',
+//   //     active: true,
+//   //   },
+//   // ],
+// };
+
+export default function SingleWorkerView(props: Props): JSX.Element {
+  // get the id from the path
+  let path = useLocation().pathname.split('/');
+  let urlWorkerId = Number(path[path.length - 1]);
+
+  // get site data from store
+  const worker: IWorker = useSelector(selectWorkers).filter(
+    (el) => el.id === urlWorkerId
+  )[0];
+
+  // send title to the parent
+  props.obtainTitle(worker.name);
+
   return (
     <div className="section">
       <p className="section-header">Libro de Assistencia</p>
       <Button type="primary">Ver Assistencia</Button>
+
+      <p className="section-header">Obras donde trabaja</p>
+      <Lists items={sites} linkPrefix={routes.SITE} />
 
       <p className="section-header">Datos del trabajador</p>
       <Descriptions bordered>
@@ -49,13 +73,12 @@ export default function SingleWorkerView(): JSX.Element {
         </Descriptions.Item>
       </Descriptions>
 
-      <p className="section-header">Obras donde trabaja</p>
-      <Lists items={worker.sites} linkPrefix={routes.SITE} />
-
       <p className="section-header">Opciones</p>
       <Space>
         <Button type="dashed">Editar</Button>
-        <Button type="dashed" danger>Eliminar</Button>
+        <Button type="dashed" danger>
+          Eliminar
+        </Button>
       </Space>
     </div>
   );

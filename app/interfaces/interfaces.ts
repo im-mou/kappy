@@ -1,19 +1,25 @@
 // Interfaces
 
 export interface IWorker {
-  _id?: number;
+  id: number;
   name: string;
   startdate: string;
   information: string;
   workertype: string;
-  sites?: Array<ISite>;
+  _id?: string; // db record ID
 }
 
 export interface ISite {
-  _id?: number;
+  id: number;
   name: string;
   startdate: string;
   information: string;
   active: boolean;
-  workers?: Array<IWorker>;
+  _id?: string; // db record ID
+}
+
+export interface IRelation {
+  _id?: string; // db record ID
+  workerId: number;
+  siteId: number;
 }
