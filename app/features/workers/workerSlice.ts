@@ -1,6 +1,7 @@
+// import _ from 'lodash';
 import { createSlice, createAction, nanoid } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-cycle
-import { IWorker } from '../../interfaces/interfaces';
+import { IWorker, IRelation } from '../../interfaces/interfaces';
 import { AppThunk, RootState } from '../../store';
 import { dbStores } from '../../utils/index';
 
@@ -54,6 +55,27 @@ export const createNewWorker = (newWorker: IWorker): AppThunk => {
         dispatch(_actions[CREATE_WORKER](newWorkerFromDB));
       }
     });
+  };
+};
+
+export const findWorkersFromId = (
+  workersIds: IRelation[],
+  cb: Function
+): AppThunk => {
+  return (dispatch, getState) => {
+    let workerFromState: IWorker[] = [];
+
+    // filter through state to find workers from thier id's
+    workersIds.forEach((rel: IRelation) => {
+      workerFromState.push(
+        getState().workers.filter(
+          (worker: IWorker) => worker.id === rel.workerId
+        )[0]
+      );
+    });
+
+    // return result
+    cb(workerFromState);
   };
 };
 

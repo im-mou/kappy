@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import styles from './Worker.css';
 import routes from '../../constants/routes.json';
 import { useLocation } from 'react-router-dom';
 import Lists from '../../components/Lists';
-import { ISite, IWorker } from '../../interfaces/interfaces';
-import { useSelector } from 'react-redux';
+import { ISite, IWorker, IRelation } from '../../interfaces/interfaces';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectSites } from './siteSlice';
+import { selectWorkers, findWorkersFromId } from '../workers/workerSlice';
 import RelationsPanel from '../relations/RelationsPanel';
+import {
+  findRelationFromSiteId,
+  selectRelationship,
+} from '../relations/relationshipSlice';
+// import {  } from "../workers/workerSlice";
 
 import { Descriptions, Button, Space } from 'antd';
 
@@ -14,9 +20,11 @@ type Props = {
   obtainTitle?: any;
 };
 
-const workers: IWorker[] = [];
-
 export default function SingleSiteView(props: Props): JSX.Element {
+  // get data from worker store
+  const dispatch = useDispatch();
+  let workersStore: IWorker[] = useSelector(selectWorkers);
+  const [workers, setWorkers] = useState([] as IWorker[]);
   const [relationsDrawerVisibility, setRelationsDrawerVisibility] = useState(
     false
   );
@@ -26,16 +34,28 @@ export default function SingleSiteView(props: Props): JSX.Element {
   };
 
   // get the id from the path
-  let path = useLocation().pathname.split('/');
-  let urlSiteId = Number(path[path.length - 1]);
+  const path = useLocation().pathname.split('/');
+  const urlSiteId = Number(path[path.length - 1]);
 
   // get site data from store
   const site: ISite = useSelector(selectSites).filter(
     (el) => el.id === urlSiteId
   )[0];
 
-  // send title to the parent
   props.obtainTitle(site.name);
+
+  // componentDidMount
+  useEffect(() => {
+    dispatch( // find relations from store
+      findRelationFromSiteId(urlSiteId, (relations: IRelation[]) => {
+        dispatch( // find workers from thier id's
+          findWorkersFromId(relations, (workers: IWorker[]) => {
+            setWorkers(workers);
+          })
+        );
+      })
+    );
+  }, [useSelector(selectRelationship)]); // sensibility list
 
   return (
     <>
@@ -71,6 +91,7 @@ export default function SingleSiteView(props: Props): JSX.Element {
       </div>
       <RelationsPanel
         siteId={urlSiteId}
+        inputWorkersIds={workers.map((w) => w.id)}
         visible={relationsDrawerVisibility}
         toggleVisibility={toggleVisibility}
       />

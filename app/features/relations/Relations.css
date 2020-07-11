@@ -1,4 +1,33 @@
 /* relations.css */
 .selected {
+  background-color: rgba(0, 162, 255, 0.171);
+}
+
+.selected:after {
+  content: '✓ añadir';
+  font-family: Arial;
+  display: inline-block;
+  color: rgb(57, 140, 250);
+}
+
+.preselected {
+  font-weight: normal;
   background-color: #d1fade;
 }
+
+.preselected:after {
+  content: 'ya existe';
+  font-family: Arial;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.preselected:not(.selected) {
+  background-color: rgba(255, 0, 0, 0.137);
+}
+
+.preselected:not(.selected):after {
+  content: '✗ Eliminar';
+  color: rgba(255, 0, 0, 0.603);
+}
+
