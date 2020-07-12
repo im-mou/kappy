@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectWorkers } from '../workers/workerSlice';
 import { createRelationship, removeRelationship } from './relationshipSlice';
+import moment from 'moment';
 import { Drawer, Button, Space, List } from 'antd';
-import { IWorker, IRelation } from '../../interfaces/interfaces';
+import { IWorker, IRelation, ISite } from '../../interfaces/interfaces';
 import styles from './Relations.css';
 
 type Props = {
-  siteId: number;
+  site: ISite;
   visible: boolean;
   inputWorkersIds: number[];
   toggleVisibility: Function;
@@ -16,7 +17,7 @@ type Props = {
 let selectedWorkersArray: Array<number> = [];
 
 export default function RelationPanel({
-  siteId,
+  site,
   visible,
   inputWorkersIds,
   toggleVisibility,
@@ -82,13 +83,17 @@ export default function RelationPanel({
 
     selectedWorkers.forEach((sw: number) => {
       if (!inputWorkersIds.includes(sw)) {
-        itemsToInsert.push({ workerId: sw, siteId });
+        // currently the start date will match the site startdate
+        let startdate = `01/${site.startdate }`;
+        itemsToInsert.push({ workerId: sw, siteId: site.id, startdate });
       }
     });
 
     inputWorkersIds.forEach((iw: number) => {
       if (!selectedWorkers.includes(iw)) {
-        itemsToRemove.push({ workerId: iw, siteId });
+        // currently the end date will be "Today date"
+        let enddate = moment().format('DD/MM/YYYY')
+        itemsToRemove.push({ workerId: iw, siteId: site.id, enddate });
       }
     });
 
@@ -104,6 +109,19 @@ export default function RelationPanel({
     }, 200);
   };
 
+  const DrawerFooter = (): JSX.Element => {
+    return (
+      <Space style={{ margin: '10px 13px' }}>
+        <Button type="primary" onClick={saveSelection}>
+          Guardar
+        </Button>
+        <Button type="text" onClick={closeDrawer}>
+          Cerrar sin guardar
+        </Button>
+      </Space>
+    );
+  };
+
   return (
     <>
       <Drawer
@@ -117,12 +135,16 @@ export default function RelationPanel({
         width={400}
         destroyOnClose={true}
         afterVisibleChange={loadAlreadySelectedWorkers}
+        footer={<DrawerFooter />}
+        bodyStyle={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
       >
         <List
+          className={styles._listContainer}
           size="large"
           header="Selecciona las trabajadores a añadir"
           bordered
           dataSource={workers}
+          style={{ backgroundColor: '#fff' }}
           renderItem={(item: IWorker) => (
             <List.Item
               className={`listitem${item.id}`}
@@ -133,15 +155,6 @@ export default function RelationPanel({
             </List.Item>
           )}
         />
-
-        <Space style={{ marginTop: '20px' }}>
-          <Button type="primary" onClick={saveSelection}>
-            Guardar
-          </Button>
-          <Button type="text" onClick={closeDrawer}>
-            Cerrar sin guardar
-          </Button>
-        </Space>
       </Drawer>
     </>
   );

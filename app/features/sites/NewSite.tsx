@@ -46,10 +46,10 @@ export default function NewSite(): JSX.Element {
     const id: number = +new Date();
 
     // serialize startdate
-    const startdate = moment(site.startdate).format('DD/MM/YYYY');
+    const startdate = moment(site.startdate).format('MM/YYYY');
 
     // dispatch new user data
-    dispatch(createNewSite({ id, ...site, startdate }));
+    dispatch(createNewSite({ ...site, id, startdate }));
 
     // message + reset form
     message.success('Obra creada correctamente');
@@ -75,12 +75,12 @@ export default function NewSite(): JSX.Element {
 
         <Form.Item
           name={['site', 'startdate']}
-          label="DatePicker"
+          label="Fecha Inicio"
           rules={[
             { type: 'object', required: true, message: 'Please select time!' },
           ]}
         >
-          <DatePicker format="DD/MM/YYYY" locale={locale} />
+          <DatePicker picker="month" format="MM/YYYY" locale={locale} />
         </Form.Item>
 
         <Form.Item name={['site', 'information']} label="Más Información">

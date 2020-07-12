@@ -22,4 +22,15 @@ export interface IRelation {
   _id?: string; // db record ID
   workerId: number;
   siteId: number;
+  startdate?: string;
+  enddate?: string;
+}
+
+export interface IAttendance {
+  _id?: string; // db record ID
+  date: string,
+  workerId: number;
+  siteId: number;
+  hours: number;
+  absent: boolean;
 }

@@ -9,11 +9,13 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { dbDocuments } from './database/dbInit';
+import { dbListeners } from "./database/dbInit";
+import dbActions from "./constants/dbActions.json";
 
 export default class AppUpdater {
   constructor() {
@@ -22,14 +24,8 @@ export default class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
-
-let mainWindow: BrowserWindow | null = null;
-
-// Put the neDB in a global constant
-// see the following issue for the explaination
-// https://github.com/louischatriot/nedb/issues/531#issuecomment-439599145
 const globalAny: any = global;
-globalAny.dbDocuments = dbDocuments;
+let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -52,6 +48,7 @@ const installExtensions = async () => {
     extensions.map((name) => installer.default(installer[name], forceDownload))
   ).catch(console.log);
 };
+
 
 const createWindow = async () => {
   if (
@@ -126,3 +123,11 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
 });
+
+// Put the neDB in a global constant
+// see the following issue for the explaination
+// https://github.com/louischatriot/nedb/issues/531#issuecomment-439599145
+globalAny.dbDocuments = dbDocuments;
+
+// start database listeners
+dbListeners();

@@ -1,11 +1,11 @@
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 import Datastore from 'nedb';
-import { resolve } from 'dns';
+import dbActions from '../constants/dbActions.json';
 
 let path =
   process.env.NODE_ENV === 'development' ? '.' : app.getPath('userData');
 
-const dbCreateLoad = (fileName: string) => {
+export const dbCreateLoad = (fileName: string) => {
   return new Datastore({
     filename: path.concat('/dbData/', fileName),
     timestampData: false,
@@ -17,4 +17,23 @@ export const dbDocuments = {
   workers: dbCreateLoad('workers.db'),
   sites: dbCreateLoad('sites.db'),
   relations: dbCreateLoad('relations.db'),
+  attendance: dbCreateLoad('attendance.db'),
+};
+
+export const dbListeners = () => {
+  // create multiple attendance documents
+  // ipcMain.on(
+  //   dbActions.CREATE_MULTIPLE_DOCUMENTS,
+  //   (event, filenames: string[]) => {
+  //     if (filenames.length) {
+  //       filenames.forEach((file: string) => {
+  //         dbCreateLoad(`attendance/${file}`);
+  //       });
+  //       event.sender.send(dbActions.CREATE_MULTIPLE_DOCUMENTS_RESPONSE, {
+  //         response: true,
+  //         data: filenames,
+  //       });
+  //     }
+  //   }
+  // );
 };

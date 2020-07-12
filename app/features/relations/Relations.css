@@ -31,3 +31,7 @@
   color: rgba(255, 0, 0, 0.603);
 }
 
+._listContainer .header {
+  font-size: smaller;
+  opacity: 0.7;
+}

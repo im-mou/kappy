@@ -46,9 +46,11 @@ export default function SingleSiteView(props: Props): JSX.Element {
 
   // componentDidMount
   useEffect(() => {
-    dispatch( // find relations from store
+    dispatch(
+      // find relations from store
       findRelationFromSiteId(urlSiteId, (relations: IRelation[]) => {
-        dispatch( // find workers from thier id's
+        dispatch(
+          // find workers from thier id's
           findWorkersFromId(relations, (workers: IWorker[]) => {
             setWorkers(workers);
           })
@@ -70,7 +72,7 @@ export default function SingleSiteView(props: Props): JSX.Element {
           style={{ marginTop: '20px' }}
           onClick={toggleVisibility}
         >
-          Añadir Trabajadores
+          Añadir {workers.length > 0 ? 'o Eliminar' : null} Trabajadores
         </Button>
 
         <p className="section-header">Datos de la obra</p>
@@ -90,7 +92,7 @@ export default function SingleSiteView(props: Props): JSX.Element {
         </Space>
       </div>
       <RelationsPanel
-        siteId={urlSiteId}
+        site={site}
         inputWorkersIds={workers.map((w) => w.id)}
         visible={relationsDrawerVisibility}
         toggleVisibility={toggleVisibility}

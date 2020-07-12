@@ -13,7 +13,7 @@ const relationshipSlice = createSlice({
   initialState: [] as Array<any>,
   reducers: {
     [INIT_STORE]: (state, action) => {
-      state.splice(0, 1);
+      state.splice(0,1)
     },
     [UPDATE_RELATIONS]: (state, action) => {
       state.push('updated');
@@ -24,23 +24,30 @@ const relationshipSlice = createSlice({
 export const _actions = relationshipSlice.actions;
 
 export const initializeRelationsStore = (): AppThunk => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+
     dispatch(_actions[INIT_STORE]([]));
+
+    // check if the store is already populated
+    // if (
+    //   getState().relations === undefined ||
+    //   getState().relations.length === 0
+    // ) {
+    //   save data to the database
+    //   dbStores.relations.find({}, (err: any, relations: Array<IRelation>) => {
+    //     if (err) {
+    //       console.log(err);
+    //     } else {
+    //       // dispatch action to update store data
+    //       dispatch(_actions[INIT_STORE](relations));
+    //     }
+    //   });
+    // }
   };
 };
 
 export const createRelationship = (newRelations: IRelation[]): AppThunk => {
-  return (dispatch) => {
-    if (newRelations.length) {
-      // generate db attendance file if they doesn't exist
-      // dispatch(generateAttendanceDocs(newRelations[0].siteId));
-
-      // generate attendance data for each worker
-      // by default if there is no record, that means that the worker is present
-      // of
-      // dispatch(generateAttendanceDataForWorker(newRelations));
-    }
-
+  return (dispatch, getState) => {
     // save data to the database
     dbStores.relations.insert(
       newRelations,
@@ -59,7 +66,7 @@ export const createRelationship = (newRelations: IRelation[]): AppThunk => {
 export const removeRelationship = (rmRelations: Array<IRelation>): AppThunk => {
   return (dispatch, getState) => {
     const { relations } = getState();
-    // let pastRelations = [...relations.map((v: IRelation) => v)];
+    let pastRelations = [...relations.map((v: IRelation) => v)];
 
     // remove data from database
     rmRelations.map((rel) =>
@@ -69,6 +76,15 @@ export const removeRelationship = (rmRelations: Array<IRelation>): AppThunk => {
         }
       })
     );
+
+    // update redux state
+    // let newState: IRelation[] = [];
+    // rmRelations.forEach((rr: IRelation) => {
+    //   newState = pastRelations.filter(
+    //     (pr: any) => !(rr.siteId === pr.siteId && rr.workerId === pr.workerId)
+    //   );
+    //   pastRelations = [...newState];
+    // });
 
     // dispatch action to update store data
     dispatch(_actions[UPDATE_RELATIONS]([]));

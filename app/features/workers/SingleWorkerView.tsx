@@ -13,31 +13,7 @@ type Props = {
   obtainTitle?: any;
 };
 
-const sites: ISite[] = [];
 
-// const worker: IWorker = {
-//   id: 1,
-//   name: 'Mohsin Riaz',
-//   startdate: '27/02/2020',
-//   information: 'telefono: 94847463',
-//   workertype: 'Encargado',
-//   // sites: [
-//   //   {
-//   //     id: 1,
-//   //     name: 'Obra 1',
-//   //     startdate: '10/03/2010',
-//   //     information: 'Jefe de obra: 94847463',
-//   //     active: true,
-//   //   },
-//   //   {
-//   //     id: 2,
-//   //     name: 'Obra 2',
-//   //     startdate: '06/11/2017',
-//   //     information: 'Encargado: 94843463',
-//   //     active: true,
-//   //   },
-//   // ],
-// };
 
 export default function SingleWorkerView(props: Props): JSX.Element {
   // get the id from the path
@@ -56,9 +32,6 @@ export default function SingleWorkerView(props: Props): JSX.Element {
     <div className="section">
       <p className="section-header">Libro de Assistencia</p>
       <Button type="primary">Ver Assistencia</Button>
-
-      <p className="section-header">Obras donde trabaja</p>
-      <Lists items={sites} linkPrefix={routes.SITE} />
 
       <p className="section-header">Datos del trabajador</p>
       <Descriptions bordered>
