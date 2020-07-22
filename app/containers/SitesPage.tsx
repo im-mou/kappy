@@ -17,13 +17,15 @@ const newSite: JSX.Element = (
 export default function SitesPage() {
   return (
     <>
-      <PageHeaderMenu
-        title="Obras"
-        subTitle="Listado de tus obras"
-        displayBack={false}
-        options={newSite}
-      />
-      <Sites />
+      {/* <React.Suspense fallback={<h1>Loading...</h1>}> */}
+        <PageHeaderMenu
+          title="Obras"
+          subTitle="Listado de tus obras"
+          displayBack={false}
+          options={newSite}
+        />
+        <Sites />
+      {/* </React.Suspense> */}
     </>
   );
 }

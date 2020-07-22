@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-// import styles from './Worker.css';
 import routes from '../../constants/routes.json';
-import { useLocation } from 'react-router-dom';
 import Lists from '../../components/Lists';
+import { useLocation } from 'react-router-dom';
 import { ISite, IWorker, IRelation } from '../../interfaces/interfaces';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSites } from './siteSlice';
@@ -44,6 +43,10 @@ export default function SingleSiteView(props: Props): JSX.Element {
 
   props.obtainTitle(site.name);
 
+  /* TODO:
+    - Replace callbacks to promises and remove dispatch calls
+  */
+
   // componentDidMount
   useEffect(() => {
     dispatch(
@@ -57,7 +60,8 @@ export default function SingleSiteView(props: Props): JSX.Element {
         );
       })
     );
-  }, [useSelector(selectRelationship)]); // sensibility list
+  }, [relationsDrawerVisibility]); // sensibility list
+
 
   return (
     <>

@@ -17,13 +17,15 @@ const newWorkerButton: JSX.Element = (
 export default function WorkersPage() {
   return (
     <>
-      <PageHeaderMenu
-        title="Trabajadores"
-        subTitle="Listado de los trabajadores"
-        displayBack={false}
-        options={newWorkerButton}
-      />
-      <Workers />
+      {/* <React.Suspense fallback={<h1>Loading...</h1>}> */}
+        <PageHeaderMenu
+          title="Trabajadores"
+          subTitle="Listado de los trabajadores"
+          displayBack={false}
+          options={newWorkerButton}
+        />
+        <Workers />
+      {/* </React.Suspense> */}
     </>
   );
 }

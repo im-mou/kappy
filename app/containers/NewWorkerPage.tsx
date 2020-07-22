@@ -5,12 +5,14 @@ import PageHeaderMenu from '../features/layout/PageHeaderMenu';
 export default function NewWorkerPage() {
   return (
     <>
-      <PageHeaderMenu
-        title="Nuevo trabajador"
-        subTitle="Crear nuevo trabajador"
-      />
+      {/* <React.Suspense fallback={<h1>Loading...</h1>}> */}
+        <PageHeaderMenu
+          title="Nuevo trabajador"
+          subTitle="Crear nuevo trabajador"
+        />
 
-      <NewWorker />
+        <NewWorker />
+      {/* </React.Suspense> */}
     </>
   );
 }

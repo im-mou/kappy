@@ -36,6 +36,8 @@ export default function RelationPanel({
       setSelectedWorkers([...inputWorkersIds]);
 
       // iterate over items to add styling
+
+      /* TODO: Change this abomination */
       inputWorkersIds.map((workerId) => {
         let _DOMitemsWorker = document.getElementsByClassName(
           `listitem${workerId}`
@@ -84,7 +86,7 @@ export default function RelationPanel({
     selectedWorkers.forEach((sw: number) => {
       if (!inputWorkersIds.includes(sw)) {
         // currently the start date will match the site startdate
-        let startdate = `01/${site.startdate }`;
+        let startdate = site.startdate;
         itemsToInsert.push({ workerId: sw, siteId: site.id, startdate });
       }
     });

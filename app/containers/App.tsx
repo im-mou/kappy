@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { initializeSitesStore } from '../features/sites/siteSlice';
 import { initializeWorkersStore } from '../features/workers/workerSlice';
 import { initializeRelationsStore } from '../features/relations/relationshipSlice';
+import { initializeAttendanceStore } from '../features/attendence/attendanceSlice';
 
 type Props = {
   children: ReactNode;
@@ -22,26 +23,29 @@ export default function App(props: Props): JSX.Element {
   dispatch(initializeSitesStore());
   dispatch(initializeWorkersStore());
   dispatch(initializeRelationsStore());
+  dispatch(initializeAttendanceStore());
 
   return (
-    <Layout
-      className={styles.container}
-      style={{ minHeight: '100vh' }}
-      data-tid="container"
-    >
-      <Sidebar />
-      <Layout className={styles['site-layout']} style={{ marginLeft: 200 }}>
-        {/* <MainHeader /> */}
-        {/* <Content style={{ margin: '0 16px' }}> */}
-        <Content style={{ padding: '15px 30px' }}>
-          <div
-            className={styles['site-layout-background']}
-            style={{ padding: 24 /*minHeight: '100vh'*/ }}
-          >
-            <>{children}</>
-          </div>
-        </Content>
+    // <React.Suspense fallback={<h1>Loading...</h1>}>
+      <Layout
+        className={styles.container}
+        style={{ minHeight: '100vh' }}
+        data-tid="container"
+      >
+        <Sidebar />
+        <Layout className={styles['site-layout']} style={{ marginLeft: 200 }}>
+          {/* <MainHeader /> */}
+          {/* <Content style={{ margin: '0 16px' }}> */}
+          <Content style={{ padding: '15px 30px' }}>
+            <div
+              className={styles['site-layout-background']}
+              style={{ padding: 24 /*minHeight: '100vh'*/ }}
+            >
+              <>{children}</>
+            </div>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
+    // </React.Suspense>
   );
 }

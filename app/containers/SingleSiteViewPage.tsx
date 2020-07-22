@@ -12,12 +12,14 @@ export default function SiteViewPage() {
 
   useEffect(() => {
     setTitle(_title);
-  }, [_title]);
+  }, []);
 
   return (
     <>
-      <PageHeaderMenu title={title} subTitle="Información de la empresa" />
-      <SingleSiteView obtainTitle={updateTitle} />
+      {/* <React.Suspense fallback={<h1>Loading...</h1>}> */}
+        <PageHeaderMenu title={title} subTitle="Información de la empresa" />
+        <SingleSiteView obtainTitle={updateTitle} />
+      {/* </React.Suspense> */}
     </>
   );
 }

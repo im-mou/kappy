@@ -3,24 +3,26 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import routes from './constants/routes.json';
 import App from './containers/App';
-import HomePage from './containers/HomePage';
+// import HomePage from './containers/HomePage';
 import SitesPage from './containers/SitesPage';
 import WorkersPage from './containers/WorkersPage';
 import NewSitePage from './containers/NewSitePage';
 import NewWorkerPage from './containers/NewWorkerPage';
 import SingleWorkerViewPage from './containers/SingleWorkerViewPage';
 import SingleSiteViewPage from './containers/SingleSiteViewPage';
+import HomePage from './containers/HomePage';
 
 // Lazily load routes and code split with webpacck
-// const LazyNewSitePage = React.lazy(() => import('./containers/NewSitePage'));
+// const HomePage = React.lazy(() => import('./containers/HomePage'));
 
-// const NewSitePage = (props: Record<string, any>) => (
+// const HomePage = (props: Record<string, any>) => (
 //   <React.Suspense fallback={<h1>Loading...</h1>}>
-//     <LazyNewSitePage {...props} />
+//     <LazyHomePage {...props} />
 //   </React.Suspense>
 // );
 
 export default function Routes() {
+
   return (
     <App>
       <Switch>

@@ -20,5 +20,6 @@ import AttendanceView from '../features/attendence/AttendanceView';
 // console.table(createWorker(worker));
 
 export default function Home(): JSX.Element {
+  // return <p>Attendance</p>;
   return <AttendanceView />;
 }

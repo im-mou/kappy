@@ -1,9 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import locale from 'antd/es/date-picker/locale/es_ES';
-import { useSelector } from "react-redux";
-import { getAttendance } from "../attendence/attendanceSlice";
-import { selectSites } from "../sites/siteSlice";
+import { useSelector, useDispatch } from 'react-redux';
+import { getAttendance } from '../attendence/attendanceSlice';
+import { selectSites } from '../sites/siteSlice';
+import { selectWorkers, findWorkersFromId } from '../workers/workerSlice';
+import {
+  findRelationFromSiteId,
+  selectRelationship,
+} from '../relations/relationshipSlice';
 import { EditableCell, EditableRow } from './EditableTableComponentes';
+import { UserOutlined, DownOutlined } from '@ant-design/icons';
+import { IWorker, ISite, IRelation } from '../../interfaces/interfaces';
+import moment, { Moment } from 'moment';
 import {
   Table,
   Button,
@@ -14,181 +22,192 @@ import {
   Menu,
   Space,
 } from 'antd';
-import { UserOutlined, DownOutlined } from '@ant-design/icons';
-import moment from 'moment';
 
-const menu = (
-  <Menu onClick={handleMenuClick}>
-    <Menu.Item key="1" icon={<UserOutlined />}>
-      1st menu item
-    </Menu.Item>
-    <Menu.Item key="2" icon={<UserOutlined />}>
-      2nd menu item
-    </Menu.Item>
-    <Menu.Item key="3" icon={<UserOutlined />}>
-      3rd item
-    </Menu.Item>
-  </Menu>
-);
+export default function EditableTable(): JSX.Element {
+  const dispatch = useDispatch();
+  let siteStore: ISite[] = useSelector(selectSites);
+  let relationsStore: IRelation[] = useSelector(selectRelationship);
+  let workersStore: IWorker[] = useSelector(selectWorkers);
 
-function handleMenuClick(e) {
-  message.info('Click on menu item.');
-  console.log('click', e);
-}
+  let workersIds: number[] = relationsStore
+    .filter((relation: IRelation) => relation.siteId === siteStore[0].id)
+    .map((r: IRelation) => r.workerId);
 
-// export default class EditableTable extends React.Component {
-  export default function EditableTable(): JSX.Element {
+  let workers: IWorker[] = workersStore.filter(
+    (worker: IWorker) => workersIds.indexOf(worker.id) > -1
+  );
 
-    const [dataSource, setDatasource] = useState([])
+  console.log('siteStore', siteStore);
 
-    // get site
+  // console.log(
+  //   'home',
+  //   workersIds
+  //   // .filter((r: IRelation) => r.siteId === siteStore[0].id)
+  //   // .forEach((el: IRelation) => {
+  //   //   return workersStore.filter((w: IWorker) => el.workerId === w.id)
+  //   // })
+  // );
 
+  // hook's state
+  // set initial states
+  const [currSite, setCurrSite] = useState(siteStore[0]);
+  const [dataSource, setDataSource] = useState(workers);
+  const [currDate, setCurrDate] = useState(
+    moment(new Date(), 'DD/MM/YYYY') as moment.Moment
+  );
 
-    // get workers
+  /* TODO:
+    - Replace callbacks to promises and remove dispatch calls
+  // */
+  // const getWorkersFromSideId = (siteId: number) => {
+  //   dispatch(
+  //     findRelationFromSiteId(siteId, (relations: IRelation[]) => {
+  //       dispatch(
+  //         findWorkersFromId(relations, (workers: IWorker[]) => {
+  //           setDataSource(workers);
+  //         })
+  //       );
+  //     })
+  //   );
+  // };
 
-    // get current date attendance
+  // define table columns
+  const columns = [
+    {
+      title: 'Nombre del Trabajador',
+      dataIndex: 'name',
+      width: '60%',
+    },
+    {
+      title: 'Horas',
+      value: 8,
+      dataIndex: 'hours',
+      width: '10%',
+      editable: true,
+    },
+    {
+      title: 'Presente',
+      dataIndex: 'present',
+      width: '15%',
+      render: (text: string, record: any) =>
+        dataSource.length >= 1 ? (
+          <Checkbox
+            checked={true}
+            // onClick={(e) => handleCheckbox(e, record.id)}
+          >
+            Present
+          </Checkbox>
+        ) : null,
+    },
+  ];
 
+  // componentDidMount
+  // getWorkersFromSideId(currSite.id);
+  // useEffect(() => {
+  //   // get workers from the first element in the site array
+  //   console.log('attendance: relations', relationsStore);
+  //   // getWorkersFromSideId(currSite.id);
+  // }, []);
 
-  constructor(props) {
-    super(props);
-    this.columns = [
-      {
-        title: 'Nombre del Trabajador',
-        dataIndex: 'name',
-        width: '60%',
-      },
-      {
-        title: 'Horas',
-        dataIndex: 'hours',
-        width: '10%',
-        editable: true,
-      },
-      {
-        title: 'Presente',
-        dataIndex: 'present',
-        width: '15%',
-        render: (text, record) =>
-          this.state.dataSource.length >= 1 ? (
-            <Checkbox onClick={(v) => this.handleCheckbox(v, record.key)}>
-              Present
-            </Checkbox>
-          ) : null,
-      },
-    ];
+  const handleCheckbox = (v: any, key: number) => {
+    // console.log(v);
+    // const ds = [...dataSource];
+    // setDataSource([...dataSource].filter((item: IWorker) => item.id !== key));
+  };
 
-    this.state = {
-      dataSource: [
-        {
-          key: '0',
-          name: 'Mohsin Riaz',
-          hours: '8',
-        },
-        {
-          key: '1',
-          name: 'Aamir mumtaz',
-          hours: '8',
-        },
-      ],
-      count: 2,
+  const handleSave = (row: any) => {
+    // const newData = [...dataSource];
+    // const index = newData.findIndex((item) => row.key === item.id);
+    // const item = newData[index];
+    // newData.splice(index, 1, {
+    //   ...item,
+    //   ...row,
+    // });
+    // setDataSource(newData);
+  };
+
+  const onChangeDate = (date: any, dateString: any) => {
+    // console.log(date, dateString);
+  };
+
+  const handleDateChange = (e: any) => {
+    // console.log('click left button', e);
+  };
+
+  const components = {
+    body: {
+      row: EditableRow,
+      cell: EditableCell,
+    },
+  };
+  const _columns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record: any) => ({
+        record,
+        editable: col.editable,
+        dataIndex: col.dataIndex,
+        title: col.title,
+        handleSave: handleSave,
+      }),
     };
-  }
+  });
 
-  handleCheckbox = (v, key) => {
-    console.log(v);
-    const dataSource = [...this.state.dataSource];
-    this.setState({
-      dataSource: dataSource.filter((item) => item.key !== key),
-    });
-  };
-
-  handleAdd = () => {
-    const { count, dataSource } = this.state;
-    const newData = {
-      key: count,
-      name: `Edward King ${count}`,
-      hours: 32,
-    };
-    this.setState({
-      dataSource: [...dataSource, newData],
-      count: count + 1,
-    });
-  };
-
-  handleSave = (row) => {
-    const newData = [...this.state.dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-    this.setState({ dataSource: newData });
-  };
-
-  onChangeDate = (date, dateString) => {
-    console.log(date, dateString);
-  };
-
-  handleDateChange = (e) => {
-    message.info('Click on left button.');
-    console.log('click left button', e);
-  };
-
-  render() {
-    const { dataSource } = this.state;
-    const components = {
-      body: {
-        row: EditableRow,
-        cell: EditableCell,
-      },
-    };
-    const columns = this.columns.map((col) => {
-      if (!col.editable) {
-        return col;
-      }
-      return {
-        ...col,
-        onCell: (record) => ({
-          record,
-          editable: col.editable,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          handleSave: this.handleSave,
-        }),
-      };
-    });
+  const menu = (items: ISite[]) => {
     return (
-      <>
-        <div>
-          <Space>
-            <Dropdown overlay={menu}>
-              <Button>
-                Nombre Empresa <DownOutlined />
-              </Button>
-            </Dropdown>
-            <DatePicker
-              onChange={this.onChangeDate}
-              allowClear={false}
-              locale={locale}
-              showToday={true}
-              format="DD/MMMM/YYYY"
-              defaultValue={moment(+Date(), 'DD/MM/YYYY')}
-            />
-            <Button>Actualizar</Button>
-          </Space>
-        </div>
-
-        <div style={{ margin: '20px 0px' }}>
-          <Table
-            components={components}
-            rowClassName={() => 'editable-row'}
-            bordered
-            dataSource={dataSource}
-            columns={columns}
-            pagination={false}
-          />
-        </div>
-      </>
+      <Menu style={{ textTransform: 'capitalize' }} onClick={handleMenuClick}>
+        {items.map((site: ISite, index: number) => (
+          <Menu.Item data-site={site} key={index}>
+            {site.name}
+          </Menu.Item>
+        ))}
+      </Menu>
     );
+  };
+
+  function handleMenuClick(e: any) {
+    // update current site state
+    const site = e.item.props['data-site'];
+    setCurrSite(site);
   }
+
+  // empty state
+  if (!siteStore.length || !relationsStore.length || !workers.length)
+    return <div>loading...</div>;
+
+  return (
+    <React.Fragment>
+      <div>
+        <Space>
+          <Dropdown overlay={menu(siteStore)}>
+            <Button>
+              {currSite?.name || 'Loading...'} <DownOutlined />
+            </Button>
+          </Dropdown>
+          <DatePicker
+            onChange={onChangeDate}
+            allowClear={false}
+            locale={locale}
+            showToday={true}
+            format="DD/MMMM/YYYY"
+            value={currDate}
+          />
+        </Space>
+      </div>
+
+      <div style={{ margin: '20px 0px' }}>
+        <Table
+          components={components}
+          rowClassName={() => 'editable-row'}
+          bordered
+          dataSource={dataSource}
+          columns={_columns}
+          pagination={false}
+        />
+      </div>
+    </React.Fragment>
+  );
 }

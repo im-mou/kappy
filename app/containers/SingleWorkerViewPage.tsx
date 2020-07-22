@@ -16,8 +16,10 @@ export default function WorkerViewPage() {
 
   return (
     <>
-      <PageHeaderMenu title={title} subTitle="Información del trabajador" />
-      <SingleWorkerView obtainTitle={updateTitle} />
+      {/* <React.Suspense fallback={<h1>Loading...</h1>}> */}
+        <PageHeaderMenu title={title} subTitle="Información del trabajador" />
+        <SingleWorkerView obtainTitle={updateTitle} />
+      {/* </React.Suspense> */}
     </>
   );
 }

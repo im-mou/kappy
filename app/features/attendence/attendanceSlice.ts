@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { createSlice } from '@reduxjs/toolkit';
+import { relationshipActions } from "../relations/relationshipSlice";
 import { AppThunk, RootState } from '../../store';
 // import { db, countMonths } from '../../utils';
 import { dbStores } from '../../utils';
@@ -13,6 +14,8 @@ import dbActions from '../../constants/dbActions.json';
 
 const INIT_STORE = 'attendance/initialize';
 
+const [relationsActions, ACTIONS] = relationshipActions;
+
 const attendanceSlice = createSlice({
   name: 'attendance' as string,
   initialState: [] as Array<any>,
@@ -21,6 +24,11 @@ const attendanceSlice = createSlice({
       state.push(action.payload);
     },
   },
+  extraReducers: {
+    'relationship/initialize' : (state, action) => {
+      console.log('weeeeeeeee')
+    }
+  }
 });
 
 export const _actions = attendanceSlice.actions;
@@ -45,9 +53,9 @@ export const getAttendance = (query: any[], cb: Function): AppThunk => {
   };
 };
 
-// getAttendanceFromDateAndSite
-// getAllAttendanceFromMonth
-// getAttendanceFromWorker
+// getAttendanceFromDateAndSite -> {date, siteId}
+// getAllAttendanceFromMonth -> {date: (MM/YYYY)}
+// getAttendanceFromWorker ->  { workerID }
 
 export const saveAttendance = (attendanceData: IAttendance[]): AppThunk => {
   return () => {
